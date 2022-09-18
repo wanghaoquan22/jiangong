@@ -35,8 +35,9 @@ const config = {
     host: 'localhost',
     proxy: {
       '/api': {
-        target: 'https://localhost:8080',
-        changeOrigin: true
+        target: 'http://106.15.4.241:8669/file/add',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
       }
     }
   }
