@@ -2,7 +2,7 @@
   <div class="demo">
     <!-- 提示按钮 -->
     <div class="tips_box" @click="showChat">
-      <img src="@/assets/imgs/girl.png" alt="" />
+      <img src="../../assets/girl.png" alt="" />
     </div>
     <chat-dialog ref="chatDialog"></chat-dialog>
   </div>

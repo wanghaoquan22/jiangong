@@ -12,7 +12,7 @@
         <div class="cont">
           <div class="cont_header">
             <div class="img">
-              <img src="@/assets/imgs/girl.png" alt="" />
+              <img src="../../assets/girl.png" alt="" />
             </div>
             <div class="right">
               <p>Hello，我是小建。</p>
