@@ -5,16 +5,20 @@
       <img src="../../assets/girl.png" alt="" />
     </div>
     <chat-dialog ref="chatDialog"></chat-dialog>
+
+    <list-dialog ref="listDialog"></list-dialog>
   </div>
 </template>
 
 <script>
 import chatDialog from './chatDialog.vue'
+import listDialog from './listDialog.vue'
 
 export default {
   name: 'Demo',
   components: {
     chatDialog,
+    listDialog,
   },
   data() {
     return {
@@ -26,7 +30,8 @@ export default {
   mounted() {},
   methods: {
     showChat() {
-      this.$refs.chatDialog.show()
+      // this.$refs.chatDialog.show()
+      this.$refs.listDialog.show()
     },
     showUpload() {
       this.isUploadShow = true

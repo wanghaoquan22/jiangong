@@ -54,7 +54,8 @@ export default {
     }
   },
   methods: {
-    show() {
+    show(xxx) {
+      console.log('xxxx', xxx)
       this.isChatShow = true
     },
     hide() {
@@ -92,11 +93,14 @@ export default {
       align-items: center;
       .img {
         width: 60px;
-        margin-right: 20px;
+        margin: 0 12px 0 8px;
         img {
           display: block;
           width: 100%;
         }
+      }
+      p {
+        margin-bottom: 4px;
       }
     }
   }

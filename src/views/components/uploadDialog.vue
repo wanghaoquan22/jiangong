@@ -31,11 +31,14 @@
             :multiple="true"
             type="drag"
             name="files"
+            :format="['jpg', 'jpeg', 'pdf', 'png', 'JPG', 'JPEG', 'PDF', 'PNG']"
             :before-upload="beforeUpload"
             :on-progress="onProgerss"
             :on-format-error="onFormatError"
+            :on-error="onError"
             :on-success="onSuccess"
             :on-remove="onRemove"
+            :default-file-list="arrList"
             action="http://106.15.4.241:8669/file/add">
             <div style="padding: 20px 0">
                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
@@ -43,6 +46,24 @@
                 <p>支持扩展名：.pdf .jpg .jpeg .png</p>
             </div>
           </Upload>
+        </div>
+        <div class="count_info" v-if="uploadCount">
+          共{{uploadCount}}个附件，上传中{{uploadCount - successCount}}个，已完成{{successCount}}个。
+        </div>
+        <div class="server">
+          <div>服务器选择：</div>
+          <RadioGroup v-model="serverType">
+            <div class="server_item">
+              <Radio :label="1">
+                <span>私有云服务器（保密性高）</span>
+              </Radio>
+            </div>
+            <div class="server_item">
+              <Radio :label="2">
+                <span>公有云服务器（快速且准确率高）</span>
+              </Radio>
+            </div>
+          </RadioGroup>
         </div>
       </div>
     </Modal>
@@ -63,36 +84,62 @@ export default {
     return {
       isUploadShow: false,
       fileType: 1,
+      serverType: 1,
       arrList: [],
+      uploadCount: 0,
+      successCount: 0,
     }
   },
+  mounted() {
+    
+  },  
   methods: {
     show() {
+      this.arrList = []
+      this.uploadCount = 0
+      this.successCount = 0
       this.isUploadShow = true
     },
     hide() {
       this.isUploadShow = false
     },
 
-    showNext() {
-      this.$refs.listDialog.show()
+    showNext(list) {
+      this.hide()
+      this.$refs.listDialog.show(list)
     },
     beforeUpload(e) {
-      console.log('beforeUpload', e)
+      this.uploadCount++
+      console.log('beforeUpload', this.uploadCount)
     },
     onProgerss(e) {
-      console.log('onProgerss', e)
+      // console.log('onProgerss', e)
     },
     onFormatError(e) {
       console.log('onFormatError', e)
+      this.$Message.error({
+        background: true,
+        content: '不支持此类型文件'
+      });
+      this.uploadCount--
     },
     onSuccess(e) {
       this.arrList.push(e[0])
+      this.successCount++
       console.log('成功', this.arrList)
     },
+    onError(err) {
+      console.log('e', err)
+      this.uploadCount--
+      this.$Message.error({
+        background: true,
+        content: '文件上传失败'
+      });
+    },  
     onRemove(e) {
       this.arrList = this.arrList.filter(item => item.fileName !== e.name)
-      console.log('成功', this.arrList)
+      this.uploadCount--
+      this.successCount--
     },
     deal() {
       console.log('fileType', this.fileType)
@@ -101,7 +148,7 @@ export default {
       fetchPost('http://106.15.4.241:8669/ocr/', {list: arr})
         .then(res => {
           console.log(res)
-          this.showNext()
+          this.showNext(res)
         })
         .catch(err => {
           console.log('err', err)
@@ -121,5 +168,19 @@ export default {
   }
   .upload {
     margin-top: 20px;
+  }
+  .server {
+    display: flex;
+    margin-top: 10px;
+    .server_item {
+      margin-bottom: 8px;
+    }
+  }
+  .count_info {
+    padding: 10px 0;
+    text-align: center;
+    background-color: rgb(241, 241, 241);
+    border-radius: 4px;
+    margin-top: 10px;
   }
 </style>
