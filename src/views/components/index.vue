@@ -30,8 +30,8 @@ export default {
   mounted() {},
   methods: {
     showChat() {
-      // this.$refs.chatDialog.show()
-      this.$refs.listDialog.show()
+      this.$refs.chatDialog.show()
+      // this.$refs.listDialog.show()
     },
     showUpload() {
       this.isUploadShow = true

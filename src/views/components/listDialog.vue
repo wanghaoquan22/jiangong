@@ -31,7 +31,9 @@
         <template #action="{ row, index }">
           <div class="action_box">
             <Button style="margin-right: 10px" type="warning" size="small" @click="edit(row, index)">编辑</Button>
-            <Button v-if="row.edited" style="margin-right: 10px" type="primary" size="small" @click="restore(row, index)">复原</Button>
+            <Tooltip v-if="row.edited" content="复原到上传时" placement="top">
+              <Button style="margin-right: 10px" type="primary" size="small" @click="restore(row, index)">复原</Button>
+            </Tooltip>
             <Button type="error" size="small" @click="del(row, index)">删除</Button>
           </div>
         </template>
@@ -45,7 +47,7 @@
       </template>
     </Modal>
 
-    <edit-dialog ref="editDialog"></edit-dialog>
+    <edit-dialog ref="editDialog" @save="editSave"></edit-dialog>
   </div>
 </template>
 
@@ -288,12 +290,17 @@ export default {
       this.$refs.editDialog.show();
     },
     edit(item, i) {
-      // item.edited = true
       this.$refs.editDialog.show(item);
       this.editIndex = i
     },
+    editSave(item) {
+      this.tempList[this.editIndex] = item
+      this.tempList[this.editIndex].edited = true
+      console.log('this.tempList', this.tempList)
+    },
     restore(item, i) {
-      item.edited = false
+      this.tempList[i] = this.list[i]
+      this.tempList[i].edited = false
     },
     del(item, i) {
       this.$Modal.confirm({
