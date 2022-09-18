@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { resolveComponent } from 'vue'
 import editDialog from "./editDialog.vue";
 
 export default {
