@@ -6,6 +6,7 @@ import store from './store'
 import './styles/index.less'
 // import './mock'
 
+
 const app = createApp(App)
 
 app.use(router)
